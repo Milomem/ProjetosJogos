@@ -1,43 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed;
+    public float moveSpeed = 5f;  // Velocidade de movimento
 
-    private bool isMoving;
+    // Variáveis para armazenar a entrada do jogador
+    private float moveX;
+    private float moveY;
 
-    private Vector2 input;
+    // Referência ao Rigidbody2D
+    private Rigidbody2D rb;
 
-    private void Update()
+    void Start()
     {
-        if (!isMoving)
-        {
-            input.x = Input.GetAxisRaw("Horizontal");
-            input.y = Input.GetAxisRaw("Vertical");
-
-            if (input != Vector2.zero)
-            {
-                var targetPos = transform.position;
-                targetPos.x += input.x;
-                targetPos.y += input.y;
-
-                StartCoroutine(Move(targetPos));
-            }
-        }
+        // Obtendo a referência ao Rigidbody2D anexado ao objeto
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    IEnumerator Move(Vector3 targetPos)
+    void Update()
     {
-        isMoving = true;
-        while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
-        transform.position = targetPos;
+        // Obtendo entrada do jogador
+        moveX = Input.GetAxis("Horizontal");
+        moveY = Input.GetAxis("Vertical");
+    }
 
-        isMoving = false;
+    void FixedUpdate()
+    {
+        // Movendo o objeto com base na entrada do jogador
+        Vector2 movement = new Vector2(moveX, moveY);
+        rb.velocity = movement * moveSpeed;
     }
 }
