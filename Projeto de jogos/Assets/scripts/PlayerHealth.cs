@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
         }
          else
         {
+            print("Player Dead");
             //player dead
         }
     }
