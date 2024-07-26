@@ -165,9 +165,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: ecc8cc55a86244f418238213beba3e5a, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.566
-  m_Pitch: 2.02
+  m_PlayOnAwake: 0
+  m_Volume: 0.302
+  m_Pitch: 3
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -2464,7 +2464,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   footstepAudioSource: {fileID: 66722765}
   footstepClip: {fileID: 8300000, guid: ecc8cc55a86244f418238213beba3e5a, type: 3}
-  stepInterval: 0.5
 --- !u!1 &903673444
 GameObject:
   m_ObjectHideFlags: 0
