@@ -25,11 +25,13 @@ public class SpearTrap : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            if(!triggered)
+
+            if(!triggered){
                 StartCoroutine(ActivateSpearTrap());
-         
-            if (active)
-                collision.GetComponent<PlayerHealth>().TakeDamage(damage);
+            }
+        
+            collision.GetComponent<PlayerHealth>().TakeDamage(damage);
+
         }
     }
 
