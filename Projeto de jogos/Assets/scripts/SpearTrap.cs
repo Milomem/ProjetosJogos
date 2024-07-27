@@ -13,7 +13,6 @@ public class SpearTrap : MonoBehaviour
     private SpriteRenderer spriteRend;
 
     private bool triggered;
-    private bool active;
 
     private void Awake()
     {
@@ -39,10 +38,8 @@ public class SpearTrap : MonoBehaviour
     {
         triggered = true;
         yield return new WaitForSeconds(activationDelay);
-        active = true;
         anim.SetBool("active", true);
         yield return new WaitForSeconds(activationTime);
-        active = false;
         triggered = false;
         anim.SetBool("active", false);
     }
