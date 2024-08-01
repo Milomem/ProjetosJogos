@@ -11,35 +11,50 @@ public class SpearTrap : MonoBehaviour
 
     private Animator anim;
     private SpriteRenderer spriteRend;
+    private AudioSource trapSound;
 
     private bool triggered;
+    private bool active;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         spriteRend = GetComponent<SpriteRenderer>();
+        trapSound = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
+{
+    if (collision.gameObject.name == "RegionTrigger")
     {
-        if (collision.tag == "Player")
+        if (!triggered)
         {
-
-            if(!triggered){
-                StartCoroutine(ActivateSpearTrap());
+            PlayerMovement playerMovement = collision.GetComponentInParent<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                Debug.Log("Trigger Die activated");
+                playerMovement.Die();
             }
-        
-            collision.GetComponent<PlayerHealth>().TakeDamage(damage);
+            StartCoroutine(ActivateSpearTrap());
+        }
 
+        if (active)
+        {
+            collision.GetComponent<PlayerHealth>().TakeDamage(damage);
         }
     }
+}
+
 
     private IEnumerator ActivateSpearTrap()
     {
         triggered = true;
         yield return new WaitForSeconds(activationDelay);
+        active = true;
         anim.SetBool("active", true);
+        trapSound.Play();
         yield return new WaitForSeconds(activationTime);
+        active = false;
         triggered = false;
         anim.SetBool("active", false);
     }
