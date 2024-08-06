@@ -1,12 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingWall : EnemyDamage
+public class MovingWall : MonoBehaviour
 {
     [Header("MovingWall Attributes")]
     [SerializeField] private float speed;
     [SerializeField] private float range;
     [SerializeField] private float checkDelay;
     [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private float damage;
     private Vector3[] directions = new Vector3[4];
     private Vector3 destination;
     private float checkTimer;
@@ -59,7 +62,10 @@ public class MovingWall : EnemyDamage
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        base.OnTriggerEnter2D(collision);
+        if (collision.tag == "Player")
+        {
+            collision.GetComponent<PlayerHealth>().TakeDamage(damage);
+        }
         Stop(); 
     }
 }
