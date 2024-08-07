@@ -1,28 +1,22 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class projectileScript : MonoBehaviour
 {
     public float moveSpeed = 5f;
-
     public float lifeTime = 5f;
-
     private float timeAlive = 0f;
-
     [SerializeField] private float damage;
-    private bool active;
-    // Start is called before the first frame update
-    void Start()
+    private AudioSource hitSound;
+
+    private void Start()
     {
-        
+        hitSound = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         transform.position -= transform.up * moveSpeed * Time.deltaTime;
-
         timeAlive += Time.deltaTime;
 
         if (timeAlive >= lifeTime)
@@ -35,7 +29,31 @@ public class projectileScript : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            collision.GetComponent<PlayerHealth>().TakeDamage(damage);
+            PlayerMovement playerMovement = collision.GetComponentInParent<PlayerMovement>();
+            if (playerMovement != null && !playerMovement.IsDead())
+            {
+                Debug.Log("Projectile hit player - trigger Die");
+                playerMovement.Die();
+
+                // Move the projectile far back on the Z axis
+                transform.position = new Vector3(transform.position.x, transform.position.y, -100f);
+
+                if (hitSound != null)
+                {
+                    StartCoroutine(PlayHitSoundAndDestroy());
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
+            }
         }
+    }
+
+    private IEnumerator PlayHitSoundAndDestroy()
+    {
+        hitSound.Play();
+        yield return new WaitForSeconds(hitSound.clip.length);
+        Destroy(gameObject);
     }
 }

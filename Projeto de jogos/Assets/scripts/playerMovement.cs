@@ -97,7 +97,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die()
     {
+        if (isDead) return;
+
         isDead = true;
         playerAnim.SetTrigger("Die");
+    }
+
+    public bool IsDead()
+    {
+        return isDead;
     }
 }

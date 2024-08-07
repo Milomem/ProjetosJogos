@@ -14,11 +14,14 @@ public class ProjectileLunche : MonoBehaviour
 
     private float timeSinceSpawned = 0.5f;
 
+    private AudioSource arrowSound;
+
+
     public DetecionZone detectionZone;
     // Start is called before the first frame update
     void Start()
     {
-        
+        arrowSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -32,6 +35,7 @@ public class ProjectileLunche : MonoBehaviour
             {
                 Instantiate(projectile, spawnLocation.position, spawnRotation);
                 timeSinceSpawned = 0;
+                arrowSound.Play();
             }
         } else {
             timeSinceSpawned = 0.5f;
