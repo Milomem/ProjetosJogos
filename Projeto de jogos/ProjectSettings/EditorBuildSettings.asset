@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Fase1.unity
     guid: 076bf473f146f5a408215119cc528151
   - enabled: 1
-    path: Assets/Scenes/Fase2.unity
+    path: Assets/Scenes/fase2.unity
     guid: 02fbcc8bebfcd4a81abfa4005d71515b
   - enabled: 1
     path: Assets/Scenes/Fase3.unity

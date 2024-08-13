@@ -15,7 +15,6 @@ public class SpearTrap : MonoBehaviour
 
     private bool triggered;
     private bool active;
-
     private void Awake()
     {
         anim = GetComponent<Animator>();
