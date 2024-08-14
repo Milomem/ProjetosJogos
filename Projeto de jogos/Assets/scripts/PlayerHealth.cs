@@ -1,41 +1,48 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private float startingHealth;
     private float currentHealth;
 
-    public Transform respawnPoint; // Arraste o GameObject "RespawnPoint" aqui no Inspector.
-    private Vector3 initialPosition;
+    public Transform respawnPoint;
+    private Animator animator;
+    private PlayerMovement playerMovement;
 
     private void Awake()
     {
-        initialPosition = transform.position;
         currentHealth = startingHealth;
-    }
-
-    public void Respawn()
-    {
-        // Reposiciona o jogador no ponto de respawn
-        transform.position = respawnPoint.position;
-        // Se necessário, você pode redefinir outros aspectos do jogador, como saúde, animação, etc.
+        animator = GetComponent<Animator>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     public void TakeDamage(float _damage)
     {
-        print("Player Hit");
+        if (playerMovement.IsDead()) return;
+
         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
 
-        if( currentHealth > 0)
+        if (currentHealth > 0)
         {
-            print(currentHealth);
-            //player hurt
+            Debug.Log("Player hit, remaining health: " + currentHealth);
         }
-         else
+        else
         {
-            print("Player Dead");
-            Respawn();
-            //player dead
+            Debug.Log("Player dead");
+            playerMovement.Die();
+            animator.SetTrigger("Die");
+            StartCoroutine(ResetSceneAfterDeath());
         }
+    }
+
+    private IEnumerator ResetSceneAfterDeath()
+    {
+        // Espera a duração da animação de morte
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length+1);
+        
+        // Reinicia a cena atual
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

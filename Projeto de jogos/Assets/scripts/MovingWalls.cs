@@ -14,7 +14,12 @@ public class MovingWall : MonoBehaviour
     private Vector3 destination;
     private float checkTimer;
     private bool attacking;
+    private AudioSource fireSound;
 
+    private void Awake()
+    {
+        fireSound = GetComponent<AudioSource>();
+    }
     private void OnEnable()
     {
         Stop();
@@ -64,6 +69,7 @@ public class MovingWall : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
+            fireSound.Play();
             collision.GetComponent<PlayerHealth>().TakeDamage(damage);
         }
         Stop(); 

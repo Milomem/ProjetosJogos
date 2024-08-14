@@ -100,7 +100,13 @@ public class PlayerMovement : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
+        rb.velocity = Vector2.zero; // Garante que o movimento seja interrompido
         playerAnim.SetTrigger("Die");
+    }
+
+    public void Revive()
+    {
+        isDead = false;
     }
 
     public bool IsDead()

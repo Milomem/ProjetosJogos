@@ -27,25 +27,27 @@ public class projectileScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        // Verifica se o objeto colidido tem o componente PlayerHealth
+        PlayerHealth playerHealth = collision.GetComponentInParent<PlayerHealth>();
+
+        if (playerHealth != null)
         {
-            PlayerMovement playerMovement = collision.GetComponentInParent<PlayerMovement>();
-            if (playerMovement != null && !playerMovement.IsDead())
+            Debug.Log("Projectile hit player - applying damage");
+
+            // Aplica dano ao jogador
+            playerHealth.TakeDamage(damage);
+
+            // Move a flecha para longe da cena (para fora do viewport)
+            transform.position = new Vector3(transform.position.x, transform.position.y, -100f);
+
+            // Reproduz o som do impacto e destrói a flecha
+            if (hitSound != null)
             {
-                Debug.Log("Projectile hit player - trigger Die");
-                playerMovement.Die();
-
-                // Move the projectile far back on the Z axis
-                transform.position = new Vector3(transform.position.x, transform.position.y, -100f);
-
-                if (hitSound != null)
-                {
-                    StartCoroutine(PlayHitSoundAndDestroy());
-                }
-                else
-                {
-                    Destroy(gameObject);
-                }
+                StartCoroutine(PlayHitSoundAndDestroy());
+            }
+            else
+            {
+                Destroy(gameObject);
             }
         }
     }
